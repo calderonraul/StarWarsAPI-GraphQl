@@ -1,0 +1,16 @@
+query AllPeopleFromApi {
+
+    allPeople{
+        people{
+            id
+            name
+            species{
+                name
+            }
+            homeworld{
+                name
+            }
+        }
+    }
+
+}
