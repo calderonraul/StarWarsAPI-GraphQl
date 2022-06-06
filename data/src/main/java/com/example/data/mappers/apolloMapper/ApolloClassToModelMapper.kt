@@ -7,7 +7,7 @@ import com.example.data.model.Person
 class ApolloClassToModelMapper : EntityMapper<Person, AllPeopleFromApiQuery.Person> {
     override fun mapFromEntity(entity: Person): AllPeopleFromApiQuery.Person {
         return AllPeopleFromApiQuery.Person(
-            id = entity.id,
+            id = entity.id!!,
             homeworld = entity.homeworld?.let { ApolloHomeworldMapper().mapFromEntity(it) },
             name = entity.name,
             species = entity.species?.let { ApolloSpeciesToSpecies().mapFromEntity(it) }
