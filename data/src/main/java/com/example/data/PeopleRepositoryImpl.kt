@@ -1,6 +1,5 @@
 package com.example.data
 
-import com.apollographql.apollo3.ApolloClient
 import com.example.data.api.PersonsAPI
 import com.example.data.mappers.apolloMapper.ApolloClassToModelMapper
 import com.example.data.mappers.personsMapper.PersonMapper

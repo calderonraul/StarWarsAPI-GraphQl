@@ -15,7 +15,7 @@ interface PersonsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllPersons(persons:List<Person>)
 
-    @Query("DELETE * FROM persons_table")
+    @Query("DELETE FROM persons_table")
     fun deleteTable()
 
 }

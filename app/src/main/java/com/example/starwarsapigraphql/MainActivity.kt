@@ -10,8 +10,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.starwarsapigraphql.presentation.PersonViewModel
 import com.example.starwarsapigraphql.ui.theme.StarWarsAPIGraphQlTheme
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.hilt.navigation.compose.hiltViewModel
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -20,12 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             StarWarsAPIGraphQlTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                PersonListInit()
             }
         }
     }
@@ -34,6 +32,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
+}
+
+@Composable
+fun PersonListInit(viewModel: PersonViewModel = hiltViewModel()){
+    PersonList(state = viewModel.registerState)
 }
 
 @Preview(showBackground = true)

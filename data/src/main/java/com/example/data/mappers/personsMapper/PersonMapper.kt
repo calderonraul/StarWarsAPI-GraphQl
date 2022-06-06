@@ -17,7 +17,7 @@ class PersonMapper : EntityMapper<Person, PersonDomain> {
 
     override fun mapToEntity(domainModel: PersonDomain): Person {
         return Person(
-            id = domainModel.id,
+            id = domainModel.id!!,
             name = domainModel.name,
             homeworld = domainModel.homeworld?.let { HomeworldMapper().mapToEntity(it) },
             species = domainModel.species?.let { SpeciesMapper().mapToEntity(it) }

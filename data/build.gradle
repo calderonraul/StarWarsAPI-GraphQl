@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id("com.apollographql.apollo3").version("3.3.0")
+    id 'kotlin-kapt'
 
 }
 
@@ -39,6 +40,11 @@ android {
 dependencies {
 
     implementation("com.apollographql.apollo3:apollo-runtime:3.3.0")
+
+    def room_version = "2.3.0" // check latest version from docs
+
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
