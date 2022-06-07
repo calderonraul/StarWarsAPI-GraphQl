@@ -1,9 +1,10 @@
 package com.example.data.database.converters
 
 import androidx.room.TypeConverter
-import com.example.data.model.Homeworld
-import com.example.data.model.Person
-import com.example.data.model.Species
+import com.example.data.model.allPeople.Homeworld
+import com.example.data.model.allPeople.Person
+import com.example.data.model.allPeople.Species
+import com.example.data.model.personDetail.VehicleConnection
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -34,7 +35,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromSpecies(json: String?):Species?{
+    fun fromSpecies(json: String?): Species?{
         return Gson().fromJson(
             json,
             object : TypeToken<Species?>() {} .type
@@ -48,10 +49,25 @@ class Converters {
         )
     }
     @TypeConverter
-    fun fromHomeworld(json: String):Homeworld{
+    fun fromHomeworld(json: String): Homeworld {
         return Gson().fromJson(
             json,
             object : TypeToken<Homeworld>() {} .type
+        )
+    }
+
+    @TypeConverter
+    fun toVehicleConnection(vehicleConnection: VehicleConnection?):String?{
+        return Gson().toJson(
+            vehicleConnection,
+            object : TypeToken<VehicleConnection>() {} .type
+        )
+    }
+    @TypeConverter
+    fun fromVehicleConnection(json: String): VehicleConnection {
+        return Gson().fromJson(
+            json,
+            object : TypeToken<VehicleConnection>() {} .type
         )
     }
 }

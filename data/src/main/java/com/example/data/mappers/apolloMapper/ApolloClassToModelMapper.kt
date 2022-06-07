@@ -2,12 +2,12 @@ package com.example.data.mappers.apolloMapper
 
 import com.example.data.AllPeopleFromApiQuery
 import com.example.data.mappers.EntityMapper
-import com.example.data.model.Person
+import com.example.data.model.allPeople.Person
 
 class ApolloClassToModelMapper : EntityMapper<Person, AllPeopleFromApiQuery.Person> {
     override fun mapFromEntity(entity: Person): AllPeopleFromApiQuery.Person {
         return AllPeopleFromApiQuery.Person(
-            id = entity.id!!,
+            id = entity.id,
             homeworld = entity.homeworld?.let { ApolloHomeworldMapper().mapFromEntity(it) },
             name = entity.name,
             species = entity.species?.let { ApolloSpeciesToSpecies().mapFromEntity(it) }

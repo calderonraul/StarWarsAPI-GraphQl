@@ -1,8 +1,8 @@
 package com.example.data.mappers.personsMapper
 
 import com.example.data.mappers.EntityMapper
-import com.example.data.model.Homeworld
-import com.example.domain.entity.HomeWorldDomain
+import com.example.data.model.allPeople.Homeworld
+import com.example.domain.entity.allPeople.HomeWorldDomain
 
 class HomeworldMapper : EntityMapper<Homeworld, HomeWorldDomain> {
     override fun mapFromEntity(entity: Homeworld): HomeWorldDomain {

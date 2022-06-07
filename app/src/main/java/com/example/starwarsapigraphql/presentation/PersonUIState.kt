@@ -1,10 +1,15 @@
 package com.example.starwarsapigraphql.presentation
 
-import com.example.domain.entity.PersonDomain
+import com.example.domain.entity.allPeople.PersonDomain
+import com.example.domain.entity.personDetail.PersonXDomain
 import kotlinx.coroutines.flow.StateFlow
 
 
 data class PersonUIState(
     val personFlow: StateFlow<List<PersonDomain>>,
-    val fetchMoreData: () -> Unit
+    val fetchMoreData: () -> Unit,
+    val personDetailFlow: StateFlow<PersonXDomain>,
+    val fetchPersonDetail: () -> Unit,
+    val wordValue: StateFlow<String>,
+    val onWordValueChanged: (String) -> Unit,
 )

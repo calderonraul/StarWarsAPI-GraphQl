@@ -1,4 +1,4 @@
-package com.example.domain.entity
+package com.example.domain.entity.allPeople
 
 data class PersonDomain(
     val id: String?,

@@ -9,7 +9,10 @@ import com.example.data.mappers.apolloMapper.ApolloClassToModelMapper
 import com.example.data.mappers.personsMapper.PersonMapper
 import com.example.domain.repository.PersonsRepository
 import com.example.domain.useCase.GetPeopleUseCase
-import com.example.starwarsapigraphql.data.database.PersonsDao
+import com.example.data.database.PersonsDao
+import com.example.data.mappers.apolloMapper.ApolloClassPersonXMapper
+import com.example.data.mappers.personDetailMapper.PersonDetailMapper
+import com.example.domain.useCase.GetPeopleDetailUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -64,6 +67,18 @@ object MappersModule {
     fun provideApolloMapper(): ApolloClassToModelMapper{
         return ApolloClassToModelMapper()
     }
+
+    @Provides
+    @Singleton
+    fun provideApolloPersonMapper(): ApolloClassPersonXMapper{
+        return ApolloClassPersonXMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun providePersonDetailMapper():PersonDetailMapper{
+        return PersonDetailMapper()
+    }
 }
 
 @Module
@@ -75,9 +90,11 @@ object RepositoryModule{
         api: PersonsAPI,
         dao: PersonsDao,
         apolloMapper: ApolloClassToModelMapper,
-        personMapper: PersonMapper
+        personMapper: PersonMapper,
+        apolloPersonMapper: ApolloClassPersonXMapper,
+        personDetailMapper: PersonDetailMapper
     ):PersonsRepository{
-        return PeopleRepositoryImpl(dao,personMapper,api,apolloMapper)
+        return PeopleRepositoryImpl(dao,personMapper,api,apolloMapper,apolloPersonMapper,personDetailMapper)
     }
 
 }
@@ -89,5 +106,11 @@ object UseCaseModule{
     @Singleton
     fun providePersonsUseCase(repository: PersonsRepository):GetPeopleUseCase{
         return GetPeopleUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providePeopleDetailUseCase(repository: PersonsRepository):GetPeopleDetailUseCase{
+        return GetPeopleDetailUseCase(repository)
     }
 }

@@ -1,6 +1,6 @@
 package com.example.domain.useCase
 
-import com.example.domain.entity.PersonDomain
+import com.example.domain.entity.allPeople.PersonDomain
 import com.example.domain.repository.PersonsRepository
 import kotlinx.coroutines.flow.Flow
 
