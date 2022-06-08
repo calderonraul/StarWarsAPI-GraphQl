@@ -3,9 +3,7 @@ package com.example.starwarsapigraphql
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
@@ -16,10 +14,12 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -27,6 +27,7 @@ import com.example.data.model.personDetail.PersonX
 import com.example.domain.entity.allPeople.HomeWorldDomain
 import com.example.domain.entity.allPeople.PersonDomain
 import com.example.domain.entity.personDetail.PersonXDomain
+import com.example.domain.entity.personDetail.VehicleConnectionDomain
 import com.example.domain.entity.personDetail.VehicleDomain
 import com.example.starwarsapigraphql.presentation.PersonUIState
 import com.example.starwarsapigraphql.ui.theme.StarWarsAPIGraphQlTheme
@@ -69,7 +70,6 @@ fun PersonItem(person: PersonDomain, state: PersonUIState, navController: NavCon
                 thickness = 0.5.dp,
                 modifier = Modifier.padding(vertical = 15.dp)
             )
-
         }
         Image(
             painter = painterResource(id = R.drawable.ic_baseline_arrow_forward_ios_24),
@@ -96,22 +96,56 @@ fun PersonList(state: PersonUIState, navController: NavController) {
             }
         }
     }
-
-
 }
 
 @Composable
 fun PersonDetail(personX: PersonXDomain) {
-    Column {
+    Column(modifier = Modifier.fillMaxSize()) {
         Text(
+            modifier = Modifier
+                .weight(0.2f)
+                .padding(16.dp),
             text = "General Information",
             style = typography.subtitle1,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
-        Text(text = "Eye Color:  ${personX.eyeColor}")
-        Text(text = "Hair Color:  ${personX.hairColor}")
-        Text(text = "Skin Color: ${personX.skinColor}")
-        Text(text = "Birth Year: ${personX.birthYear}")
+
+        Row(Modifier.weight(0.2f)) {
+            Text(text = "Eye Color:  ", modifier = Modifier.padding(horizontal = 16.dp))
+            Spacer(modifier = Modifier.weight(0.8f))
+            Text(
+                text = "${personX.eyeColor}",
+                modifier = Modifier.padding(horizontal = 16.dp),
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Row(Modifier.weight(0.2f)) {
+            Text(text = "Hair Color:  ", modifier = Modifier.padding(horizontal = 16.dp))
+            Spacer(modifier = Modifier.weight(0.8f))
+            Text(
+                text = "${personX.hairColor}",
+                modifier = Modifier.padding(horizontal = 16.dp),
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Row(Modifier.weight(0.2f)) {
+            Text(text = "Skin Color:  ", modifier = Modifier.padding(horizontal = 16.dp))
+            Spacer(modifier = Modifier.weight(0.8f))
+            Text(
+                text = "${personX.skinColor}",
+                modifier = Modifier.padding(horizontal = 16.dp),
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Row(Modifier.weight(0.2f)) {
+            Text(text = "Birth Year: ", modifier = Modifier.padding(horizontal = 16.dp))
+            Spacer(modifier = Modifier.weight(0.8f))
+            Text(
+                text = "${personX.birthYear}",
+                modifier = Modifier.padding(horizontal = 16.dp),
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 
@@ -119,7 +153,7 @@ fun PersonDetail(personX: PersonXDomain) {
 @Composable
 fun VehicleItem(vehicle: VehicleDomain) {
     Column {
-        vehicle.name?.let { Text(text = it) }
+        vehicle.name?.let { Text(text = it, modifier = Modifier.padding(16.dp)) }
     }
 }
 
@@ -142,33 +176,67 @@ fun PersonDetailScreen(state: PersonUIState, aux: String) {
     state.fetchPersonDetail()
 
     Column() {
-        PersonDetail(personX = personX)
-        if (personX.vehicleConnection == null) {
-            Text(text = "No vehicles")
-        } else {
-            VehicleList(vehicleList = personX.vehicleConnection?.vehicles!!)
+        TopAppBar(
+            title = {
+                Text(
+                    text = "${personX.name}"
+                )
+            },
+            modifier = Modifier
+                .weight(0.1f)
+                .fillMaxWidth()
+        )
+        Row(modifier = Modifier.weight(0.4f)) {
+            PersonDetail(personX = personX)
+        }
+        Row(modifier = Modifier.weight(0.4f)) {
+            if (personX.vehicleConnection == null || personX.vehicleConnection!!.vehicles?.isEmpty() != false) {
+                Text(
+                    text = "No vehicles",
+                    modifier = Modifier.padding(16.dp),
+                    style = typography.subtitle1,
+                    fontWeight = FontWeight.Bold
+                )
+            } else {
+                Column() {
+                    Text(
+                        text = "Vehicles",
+                        modifier = Modifier.padding(16.dp),
+                        style = typography.subtitle1,
+                        fontWeight = FontWeight.Bold
+                    )
+                    VehicleList(vehicleList = personX.vehicleConnection?.vehicles!!)
+                }
+            }
         }
     }
-
-
 }
 
 @Preview
 @Composable
 fun ItemPreview() {
 
-    val testHomeWorldDomain = HomeWorldDomain(
-        "naboo"
-    )
+    val personX = PersonXDomain(
+        id = "1",
+        name = "Luke Skywalker",
+        birthYear = "19BBY",
 
-    val personita = PersonDomain(
-        "69",
-        "Luke Skywalker",
-        null,
-        testHomeWorldDomain
+        eyeColor = "blue",
+        hairColor = "blond",
+        skinColor = "fair",
+        vehicleConnection = VehicleConnectionDomain(
+            vehicles = listOf(
+                VehicleDomain(
+                    name = "Sand Crawler"
+                ),
+                VehicleDomain(
+                    name = "T-16 skyhopper"
+                )
+            )
+        )
     )
 
     StarWarsAPIGraphQlTheme {
-
+        PersonDetail(personX = personX)
     }
 }
