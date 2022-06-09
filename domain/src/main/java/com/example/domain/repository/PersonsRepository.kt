@@ -6,8 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface PersonsRepository {
-    suspend fun getAllPersonsAPI()
+    suspend fun getAllPersonsAPI(numberOfItems:Int):List<PersonDomain>
     fun getPersonsFromRoom():Flow<List<PersonDomain>>
     suspend fun getPersonById(id:String)
     fun getPersonByIdFromRoom():Flow<PersonXDomain>
+
 }

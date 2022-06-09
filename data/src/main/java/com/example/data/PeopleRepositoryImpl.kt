@@ -1,6 +1,8 @@
 package com.example.data
 
+
 import android.util.Log
+import com.apollographql.apollo3.api.Optional
 import com.example.data.api.PersonsAPI
 import com.example.data.mappers.apolloMapper.ApolloClassToModelMapper
 import com.example.data.mappers.personsMapper.PersonMapper
@@ -13,6 +15,7 @@ import com.example.domain.entity.personDetail.PersonXDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+
 class PeopleRepositoryImpl(
     private val dao: PersonsDao,
     private val personMapper: PersonMapper,
@@ -23,11 +26,16 @@ class PeopleRepositoryImpl(
 ) :
     PersonsRepository {
 
-    override suspend fun getAllPersonsAPI() {
-        val listAux = api.getApolloClient().query(AllPeopleFromApiQuery()).execute().data
+    override suspend fun getAllPersonsAPI(numberOfItems:Int): List<PersonDomain> {
+        val auxItem:Optional<Int>
+        auxItem = Optional.Present(numberOfItems)
+        val listAux = api.getApolloClient().query(AllPeopleFromApiQuery(auxItem)).execute().data
+        Log.wtf("listAux", listAux.toString())
         if (listAux != null) {
+            dao.deleteTable()
             dao.insertAllPersons(apolloMapper.toEntityList(listAux.allPeople?.people))
         }
+        return personMapper.fromEntityList(apolloMapper.toEntityList(listAux?.allPeople?.people))
     }
 
     override fun getPersonsFromRoom(): Flow<List<PersonDomain>> {
@@ -49,5 +57,6 @@ class PeopleRepositoryImpl(
             personXMapper.mapFromEntity(it)
         }
     }
+
 
 }

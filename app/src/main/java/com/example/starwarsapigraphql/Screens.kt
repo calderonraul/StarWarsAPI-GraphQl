@@ -168,7 +168,6 @@ fun VehicleList(vehicleList: List<VehicleDomain?>) {
     }
 }
 
-
 @Composable
 fun PersonDetailScreen(state: PersonUIState, aux: String) {
     val personX by state.personDetailFlow.collectAsState()

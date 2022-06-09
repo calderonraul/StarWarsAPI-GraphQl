@@ -10,7 +10,7 @@ class GetPeopleUseCase(private val repository: PersonsRepository) {
         return repository.getPersonsFromRoom()
     }
 
-    suspend fun initDb(){
-        repository.getAllPersonsAPI()
+    suspend fun initDb(page:Int){
+        repository.getAllPersonsAPI(page)
     }
 }
