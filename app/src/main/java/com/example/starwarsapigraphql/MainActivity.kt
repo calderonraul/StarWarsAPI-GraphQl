@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun PersonListInit(viewModel: PersonViewModel = hiltViewModel(), navController: NavController) {
-    PersonList(state = viewModel.registerState, navController)
+    PersonList(viewModel.pagedInfo, navController)
 }
 
 @Composable

@@ -1,6 +1,7 @@
+query AllPeopleFromApi($items:Int, $cursor:String) {
 
-query AllPeopleFromApi($items:Int) {
-    allPeople(first:$items){
+    allPeople(first:$items, after:$cursor){  
+   
         people{
             id
             name
@@ -9,8 +10,14 @@ query AllPeopleFromApi($items:Int) {
             }
             homeworld{
                 name
-            }
-        }
+            },
+          
+        },
+    pageInfo{
+      endCursor,
+      hasNextPage
+    }
     }
 
 }
+

@@ -1,11 +1,9 @@
 package com.example.starwarsapigraphql
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.typography
@@ -14,28 +12,29 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.data.model.personDetail.PersonX
-import com.example.domain.entity.allPeople.HomeWorldDomain
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.example.domain.entity.allPeople.PersonDomain
 import com.example.domain.entity.personDetail.PersonXDomain
 import com.example.domain.entity.personDetail.VehicleConnectionDomain
 import com.example.domain.entity.personDetail.VehicleDomain
 import com.example.starwarsapigraphql.presentation.PersonUIState
 import com.example.starwarsapigraphql.ui.theme.StarWarsAPIGraphQlTheme
+import kotlinx.coroutines.flow.Flow
 
 
 @Composable
-fun PersonItem(person: PersonDomain, state: PersonUIState, navController: NavController) {
-    val word by state.wordValue.collectAsState()
+fun PersonItem(person: PersonDomain,  navController: NavController) {
+
     var aux = ""
     Row(modifier = Modifier
         .padding(16.dp)
@@ -79,24 +78,17 @@ fun PersonItem(person: PersonDomain, state: PersonUIState, navController: NavCon
 }
 
 @Composable
-fun PersonList(state: PersonUIState, navController: NavController) {
-    state.fetchMoreData()
-    val personList by state.personFlow.collectAsState()
-
-
-
-    Column() {
-        TopAppBar(
-            title = { Text(text = "People of Star Wars") },
-            modifier = Modifier.weight(0.1f)
-        )
-        LazyColumn(modifier = Modifier.weight(0.9f)) {
-            itemsIndexed(personList) { _, item ->
-                PersonItem(item, state, navController)
+fun PersonList(personList: Flow<PagingData<PersonDomain>>, navController: NavController) {
+    val personListItems:LazyPagingItems<PersonDomain> = personList.collectAsLazyPagingItems()
+    LazyColumn{
+        items(items = personListItems) { item ->
+            if (item != null) {
+                PersonItem(item, navController = navController)
             }
         }
     }
 }
+
 
 @Composable
 fun PersonDetail(personX: PersonXDomain) {
