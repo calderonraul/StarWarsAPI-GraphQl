@@ -8,14 +8,16 @@ class PageInfoMapper : EntityMapper<PageInfo, PageInfoDomain> {
     override fun mapFromEntity(entity: PageInfo): PageInfoDomain {
         return PageInfoDomain(
             endCursor = entity.endCursor,
-            hasNextPage = entity.hasNextPage
+            hasNextPage = entity.hasNextPage,
+            hasPreviousPage = entity.hasPreviousPage
         )
     }
 
     override fun mapToEntity(domainModel: PageInfoDomain): PageInfo {
         return PageInfo(
             endCursor = domainModel.endCursor,
-            hasNextPage = domainModel.hasNextPage
+            hasNextPage = domainModel.hasNextPage,
+            hasPreviousPage = domainModel.hasPreviousPage
         )
     }
 }

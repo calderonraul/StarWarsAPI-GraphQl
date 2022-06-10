@@ -11,6 +11,6 @@ class GetPeopleUseCase(private val repository: PersonsRepository) {
     }
 
     suspend fun initDb(page:Int){
-        repository.getAllPersonsAPI(page)
+       // repository.getAllPersonsAPI(page)
     }
 }

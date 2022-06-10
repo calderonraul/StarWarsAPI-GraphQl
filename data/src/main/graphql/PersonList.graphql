@@ -13,10 +13,11 @@ query AllPeopleFromApi($items:Int, $cursor:String) {
             },
           
         },
-    pageInfo{
-      endCursor,
-      hasNextPage
-    }
+        pageInfo{
+          endCursor,
+          hasNextPage,
+          hasPreviousPage
+        }
     }
 
 }

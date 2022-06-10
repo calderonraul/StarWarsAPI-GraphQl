@@ -8,24 +8,25 @@ import com.example.domain.repository.PersonsRepository
 
 class PersonsSource(private val repository: PersonsRepository) : PagingSource<String, PersonDomain>() {
     override fun getRefreshKey(state: PagingState<String, PersonDomain>): String? {
-        return state.anchorPosition?.toString()
+        return state.anchorPosition?.let {
+            state.closestItemToPosition(it)?.id
+        }
     }
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, PersonDomain> {
 
         return try {
-            val response = repository.getAllPersonsAPI(50, params.key ?: "" )
-            val nextPage = if (response)
+            val response = repository.getAllPersonsAPI(5,params.key ?: "")
+            val prevKey=if(response?.pageInfoDomain?.hasPreviousPage==false)null else response?.pageInfoDomain?.endCursor
+            val nextKey=if(response?.pageInfoDomain?.hasNextPage==false)null else response?.pageInfoDomain?.endCursor
             LoadResult.Page(
-
-                data = repository.getAllPersonsAPI(nextPage,""),
-                prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = nextPage.plus(1)
+                data = response?.people?:emptyList(),
+                prevKey = prevKey,
+                nextKey = nextKey
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
     }
-
 
 }

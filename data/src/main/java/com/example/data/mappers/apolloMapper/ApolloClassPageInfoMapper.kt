@@ -9,14 +9,16 @@ class ApolloClassPageInfoMapper: EntityMapper<PageInfo,AllPeopleFromApiQuery.Pag
     override fun mapFromEntity(entity: PageInfo): AllPeopleFromApiQuery.PageInfo {
         return AllPeopleFromApiQuery.PageInfo(
             hasNextPage = entity.hasNextPage,
-            endCursor = entity.endCursor
+            endCursor = entity.endCursor,
+            hasPreviousPage = entity.hasPreviousPage
         )
     }
 
     override fun mapToEntity(domainModel: AllPeopleFromApiQuery.PageInfo): PageInfo {
         return PageInfo(
             hasNextPage = domainModel.hasNextPage,
-            endCursor = domainModel.endCursor
+            endCursor = domainModel.endCursor,
+            hasPreviousPage = domainModel.hasPreviousPage
         )
     }
 }
