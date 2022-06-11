@@ -39,7 +39,6 @@ class PersonViewModel @Inject constructor(
 
     val pagedInfo: Flow<PagingData<PersonDomain>> = Pager(PagingConfig(pageSize = 5)){
         personsSource
-
     }.flow.cachedIn(viewModelScope)
 
 
