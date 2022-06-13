@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,7 +55,7 @@ fun PersonItem(person: PersonDomain, navController: NavController) {
                 )
             }
             aux = if (person.species?.name == null) {
-                "Human"
+                stringResource(id = R.string.human)
             } else {
                 person.species!!.name!!
             }
@@ -85,41 +86,47 @@ fun PersonList(state: PersonUIState, navController: NavController) {
     val personListItems: LazyPagingItems<PersonDomain> =
         state.fetchPersonsPaginated().collectAsLazyPagingItems()
 
-
-
-    LazyColumn {
-        items(items = personListItems) { item ->
-            item?.let { PersonItem(it, navController = navController) }
-        }
-        personListItems.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
-                }
-                loadState.append is LoadState.Loading -> {
-                    item { LoadingItem() }
-                }
-
-                loadState.refresh is LoadState.Error -> {
-                    val e = personListItems.loadState.refresh as LoadState.Error
-                    item {
-                        ErrorItem(
-                            message = e.error.localizedMessage!!,
-                            modifier = Modifier.fillParentMaxSize(),
-                            onClickRetry = { retry() })
+    Column() {
+        TopAppBar(
+            title = { Text(text = stringResource(id = R.string.top_app_bar_title)) },
+            modifier = Modifier.weight(0.1f)
+        )
+        LazyColumn(modifier = Modifier.weight(0.9f)) {
+            items(items = personListItems) { item ->
+                item?.let { PersonItem(it, navController = navController) }
+            }
+            personListItems.apply {
+                when {
+                    loadState.refresh is LoadState.Loading -> {
+                        item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
                     }
-                }
-                loadState.append is LoadState.Error -> {
-                    val e = personListItems.loadState.append as LoadState.Error
-                    item {
-                        ErrorItem(
-                            message = e.error.localizedMessage!!,
-                            onClickRetry = { retry() })
+                    loadState.append is LoadState.Loading -> {
+                        item { LoadingItem() }
+                    }
+
+                    loadState.refresh is LoadState.Error -> {
+                        val e = personListItems.loadState.refresh as LoadState.Error
+                        item {
+                            ErrorItem(
+                                message = e.error.localizedMessage!!,
+                                modifier = Modifier.fillParentMaxSize(),
+                                onClickRetry = { retry() })
+                        }
+                    }
+                    loadState.append is LoadState.Error -> {
+                        val e = personListItems.loadState.append as LoadState.Error
+                        item {
+                            ErrorItem(
+                                message = e.error.localizedMessage!!,
+                                onClickRetry = { retry() })
+                        }
                     }
                 }
             }
         }
     }
+
+
 }
 
 
@@ -130,13 +137,16 @@ fun PersonDetail(personX: PersonXDomain) {
             modifier = Modifier
                 .weight(0.2f)
                 .padding(16.dp),
-            text = "General Information",
+            text = stringResource(id = R.string.general_info),
             style = typography.subtitle1,
             fontWeight = FontWeight.Bold,
         )
 
         Row(Modifier.weight(0.2f)) {
-            Text(text = "Eye Color:  ", modifier = Modifier.padding(horizontal = 16.dp))
+            Text(
+                text = stringResource(id = R.string.eyes),
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             Spacer(modifier = Modifier.weight(0.8f))
             Text(
                 text = "${personX.eyeColor}",
@@ -145,7 +155,10 @@ fun PersonDetail(personX: PersonXDomain) {
             )
         }
         Row(Modifier.weight(0.2f)) {
-            Text(text = "Hair Color:  ", modifier = Modifier.padding(horizontal = 16.dp))
+            Text(
+                text = stringResource(id = R.string.hair),
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             Spacer(modifier = Modifier.weight(0.8f))
             Text(
                 text = "${personX.hairColor}",
@@ -154,7 +167,10 @@ fun PersonDetail(personX: PersonXDomain) {
             )
         }
         Row(Modifier.weight(0.2f)) {
-            Text(text = "Skin Color:  ", modifier = Modifier.padding(horizontal = 16.dp))
+            Text(
+                text = stringResource(id = R.string.skin),
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             Spacer(modifier = Modifier.weight(0.8f))
             Text(
                 text = "${personX.skinColor}",
@@ -163,7 +179,10 @@ fun PersonDetail(personX: PersonXDomain) {
             )
         }
         Row(Modifier.weight(0.2f)) {
-            Text(text = "Birth Year: ", modifier = Modifier.padding(horizontal = 16.dp))
+            Text(
+                text = stringResource(id = R.string.birth),
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             Spacer(modifier = Modifier.weight(0.8f))
             Text(
                 text = "${personX.birthYear}",
@@ -216,7 +235,7 @@ fun PersonDetailScreen(state: PersonUIState, aux: String) {
         Row(modifier = Modifier.weight(0.4f)) {
             if (personX.vehicleConnection == null || personX.vehicleConnection!!.vehicles?.isEmpty() != false) {
                 Text(
-                    text = "No vehicles",
+                    text = stringResource(id = R.string.no_vehicles),
                     modifier = Modifier.padding(16.dp),
                     style = typography.subtitle1,
                     fontWeight = FontWeight.Bold
@@ -224,7 +243,7 @@ fun PersonDetailScreen(state: PersonUIState, aux: String) {
             } else {
                 Column() {
                     Text(
-                        text = "Vehicles",
+                        text = stringResource(id = R.string.vehicles),
                         modifier = Modifier.padding(16.dp),
                         style = typography.subtitle1,
                         fontWeight = FontWeight.Bold

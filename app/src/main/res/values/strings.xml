@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">starWarsAPIGraphQl</string>
+    <string name="top_app_bar_title">People of star wars</string>
+    <string name="general_info">General Information</string>
+    <string name="try_again">Try again!</string>
+    <string name="human">Human</string>
+    <string name="eyes">Eye Color:  </string>
+    <string name="hair">Hair Color: </string>
+    <string name="skin">Skin Color: </string>
+    <string name="birth">Birth Year: </string>
+    <string name="vehicles">Vehicles</string>
+    <string name="no_vehicles">No vehicles</string>
+
+
 </resources>

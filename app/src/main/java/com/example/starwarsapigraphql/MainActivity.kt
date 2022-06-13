@@ -36,8 +36,8 @@ fun PersonListInit(viewModel: PersonViewModel = hiltViewModel(), navController: 
 }
 
 @Composable
-fun PersonDetailInit(viewModel: PersonViewModel = hiltViewModel(),aux:String) {
-    PersonDetailScreen(state = viewModel.registerState,aux)
+fun PersonDetailInit(viewModel: PersonViewModel = hiltViewModel(), aux: String) {
+    PersonDetailScreen(state = viewModel.registerState, aux)
 }
 
 @Composable
@@ -47,10 +47,10 @@ fun StartApp() {
         composable("PersonListInit") {
             PersonListInit(navController = navController)
         }
-        composable("PersonDetailInit/{id}", listOf(navArgument("id"){
-            type= NavType.StringType
+        composable("PersonDetailInit/{id}", listOf(navArgument("id") {
+            type = NavType.StringType
         })) {
-            val aux=it.arguments?.getString("id")
+            val aux = it.arguments?.getString("id")
             if (aux != null) {
                 PersonDetailInit(aux = aux)
             }

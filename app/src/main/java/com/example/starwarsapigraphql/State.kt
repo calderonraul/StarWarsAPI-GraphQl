@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -27,7 +28,8 @@ fun LoadingView(
 @Composable
 fun LoadingItem() {
     CircularProgressIndicator(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(16.dp)
             .wrapContentWidth(Alignment.CenterHorizontally)
     )
@@ -52,7 +54,7 @@ fun ErrorItem(
             color = Color.Red
         )
         OutlinedButton(onClick = onClickRetry) {
-            Text(text = "Try again")
+            Text(text = stringResource(id = R.string.try_again))
         }
     }
 }
