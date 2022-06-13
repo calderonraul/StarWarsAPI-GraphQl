@@ -1,5 +1,6 @@
 package com.example.domain.repository
 
+import androidx.paging.PagingData
 import com.example.domain.entity.allPeople.AllPeopleDomain
 import com.example.domain.entity.allPeople.PersonDomain
 import com.example.domain.entity.personDetail.PersonXDomain
@@ -11,5 +12,6 @@ interface PersonsRepository {
     fun getPersonsFromRoom():Flow<List<PersonDomain>>
     suspend fun getPersonById(id:String)
     fun getPersonByIdFromRoom():Flow<PersonXDomain>
+    fun getOrdersPaginated(cursor: String): Flow<PagingData<PersonDomain>>
 
 }

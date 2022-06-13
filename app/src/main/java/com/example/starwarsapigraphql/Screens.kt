@@ -1,5 +1,6 @@
 package com.example.starwarsapigraphql
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -78,13 +79,12 @@ fun PersonItem(person: PersonDomain,  navController: NavController) {
 }
 
 @Composable
-fun PersonList(personList: Flow<PagingData<PersonDomain>>, navController: NavController) {
-    val personListItems:LazyPagingItems<PersonDomain> = personList.collectAsLazyPagingItems()
+fun PersonList(state: PersonUIState, navController: NavController) {
+
+    val personListItems:LazyPagingItems<PersonDomain> = state.fetchPersonsPaginated().collectAsLazyPagingItems()
     LazyColumn{
         items(items = personListItems) { item ->
-            if (item != null) {
-                PersonItem(item, navController = navController)
-            }
+            item?.let { PersonItem(it, navController = navController) }
         }
     }
 }

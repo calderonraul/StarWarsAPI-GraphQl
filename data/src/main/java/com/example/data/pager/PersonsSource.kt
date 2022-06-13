@@ -1,12 +1,15 @@
-package com.example.domain.pager
+package com.example.data.pager
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.apollographql.apollo3.api.Optional
+import com.example.data.AllPeopleFromApiQuery
+import com.example.data.api.PersonsAPI
+import com.example.data.mappers.apolloMapper.ApolloClassAllPeopleMapper
+import com.example.data.mappers.personsMapper.AllPeopleMapper
 import com.example.domain.entity.allPeople.PersonDomain
-import com.example.domain.repository.PersonsRepository
 
-class PersonsSource(private val repository: PersonsRepository) : PagingSource<String, PersonDomain>() {
+class PersonsSource(private val api: PersonsAPI,private val cursor:String) : PagingSource<String, PersonDomain>() {
     override fun getRefreshKey(state: PagingState<String, PersonDomain>): String? {
         return state.anchorPosition?.let {
             state.closestItemToPosition(it)?.id
@@ -14,9 +17,14 @@ class PersonsSource(private val repository: PersonsRepository) : PagingSource<St
     }
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, PersonDomain> {
-
         return try {
-            val response = repository.getAllPersonsAPI(5,params.key ?: "")
+            val auxItem = Optional.Present(5)
+            val auxCursor=Optional.Present(params.key?:"")
+
+            val listAux =api.getApolloClient().query(AllPeopleFromApiQuery(auxItem, auxCursor)).execute().data
+            val mapper=listAux?.allPeople?.let { ApolloClassAllPeopleMapper().mapToEntity(it) }
+
+            val response = mapper?.let { AllPeopleMapper().mapFromEntity(it) }
             val prevKey=if(response?.pageInfoDomain?.hasPreviousPage==false)null else response?.pageInfoDomain?.endCursor
             val nextKey=if(response?.pageInfoDomain?.hasNextPage==false)null else response?.pageInfoDomain?.endCursor
             LoadResult.Page(
