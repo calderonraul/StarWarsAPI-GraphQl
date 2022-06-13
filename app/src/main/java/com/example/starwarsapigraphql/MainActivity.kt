@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             StarWarsAPIGraphQlTheme {
-                // A surface container using the 'background' color from the theme
                 StartApp()
             }
         }
@@ -33,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun PersonListInit(viewModel: PersonViewModel = hiltViewModel(), navController: NavController) {
-    PersonList(state = viewModel.registerState, navController)
+    PersonList(viewModel.registerState, navController)
 }
 
 @Composable

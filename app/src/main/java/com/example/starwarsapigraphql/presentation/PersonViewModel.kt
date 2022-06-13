@@ -1,15 +1,20 @@
 package com.example.starwarsapigraphql.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.domain.entity.allPeople.PersonDomain
 import com.example.domain.entity.personDetail.PersonXDomain
+import com.example.data.pager.PersonsSource
 import com.example.domain.useCase.GetPeopleDetailUseCase
 import com.example.domain.useCase.GetPeopleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,12 +37,12 @@ class PersonViewModel @Inject constructor(
         )
     )
 
+    private fun getPersonsPaginated(): Flow<PagingData<PersonDomain>> {
+        return getPeopleUseCase.invoke()
+    }
+
     private fun fetchList() {
         viewModelScope.launch(Dispatchers.IO) {
-            getPeopleUseCase.initDb()
-            getPeopleUseCase.invoke().collect {
-                personsData.value = it
-            }
         }
     }
 
@@ -51,7 +56,6 @@ class PersonViewModel @Inject constructor(
     }
 
     private fun onWordChanged(value: String) {
-
         wordValueFlow.value = value
     }
 
@@ -61,6 +65,7 @@ class PersonViewModel @Inject constructor(
         wordValue = wordValueFlow,
         onWordValueChanged = this::onWordChanged,
         fetchPersonDetail = this::fetchPersonDetail,
-        personDetailFlow = personDetailData
+        personDetailFlow = personDetailData,
+        fetchPersonsPaginated = this::getPersonsPaginated
     )
 }

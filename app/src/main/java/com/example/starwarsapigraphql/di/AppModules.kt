@@ -12,6 +12,7 @@ import com.example.domain.useCase.GetPeopleUseCase
 import com.example.data.database.PersonsDao
 import com.example.data.mappers.apolloMapper.ApolloClassPersonXMapper
 import com.example.data.mappers.personDetailMapper.PersonDetailMapper
+import com.example.data.pager.PersonsSource
 import com.example.domain.useCase.GetPeopleDetailUseCase
 import dagger.Module
 import dagger.Provides
@@ -95,6 +96,16 @@ object RepositoryModule{
         personDetailMapper: PersonDetailMapper
     ):PersonsRepository{
         return PeopleRepositoryImpl(dao,personMapper,api,apolloMapper,apolloPersonMapper,personDetailMapper)
+    }
+
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object PagerModule{
+    @Provides
+    fun providePagerSource(api: PersonsAPI): PersonsSource {
+        return PersonsSource(api)
     }
 
 }

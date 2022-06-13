@@ -1,5 +1,6 @@
 package com.example.domain.entity.allPeople
 
 data class AllPeopleDomain(
-    val people: List<PersonDomain>
+    val people: List<PersonDomain>,
+    val pageInfoDomain: PageInfoDomain
 )
