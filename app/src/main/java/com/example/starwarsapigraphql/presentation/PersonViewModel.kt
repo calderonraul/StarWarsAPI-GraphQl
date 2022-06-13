@@ -36,10 +36,9 @@ class PersonViewModel @Inject constructor(
             vehicleConnection = null
         )
     )
-    private val currentQueryValue: MutableStateFlow<String> = MutableStateFlow("")
 
     private fun getPersonsPaginated(): Flow<PagingData<PersonDomain>> {
-        return getPeopleUseCase.invoke(currentQueryValue.value)
+        return getPeopleUseCase.invoke()
     }
 
     private fun fetchList() {
@@ -60,10 +59,6 @@ class PersonViewModel @Inject constructor(
         wordValueFlow.value = value
     }
 
-    private fun onQueryChanged(value: String) {
-        currentQueryValue.value = value
-    }
-
     val registerState = PersonUIState(
         personFlow = personsData,
         fetchMoreData = this::fetchList,
@@ -71,8 +66,6 @@ class PersonViewModel @Inject constructor(
         onWordValueChanged = this::onWordChanged,
         fetchPersonDetail = this::fetchPersonDetail,
         personDetailFlow = personDetailData,
-        onQueryValueChanged = this::onQueryChanged,
-        currentQueryValue = currentQueryValue,
         fetchPersonsPaginated = this::getPersonsPaginated
     )
 }

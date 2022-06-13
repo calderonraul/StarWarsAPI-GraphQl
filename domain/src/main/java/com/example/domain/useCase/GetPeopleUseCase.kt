@@ -7,12 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 
 class GetPeopleUseCase(private val repository: PersonsRepository) {
-    operator fun invoke(cursor:String): Flow<PagingData<PersonDomain>>{
-        return repository.getOrdersPaginated(cursor)
+    operator fun invoke(): Flow<PagingData<PersonDomain>>{
+        return repository.getOrdersPaginated()
     }
 
-    suspend fun initDb(page:Int){
-       // repository.getAllPersonsAPI(page)
-    }
 
 }

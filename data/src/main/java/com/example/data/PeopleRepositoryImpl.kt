@@ -68,10 +68,10 @@ class PeopleRepositoryImpl(
         }
     }
 
-    override fun getOrdersPaginated(cursor: String): Flow<PagingData<PersonDomain>> {
+    override fun getOrdersPaginated(): Flow<PagingData<PersonDomain>> {
         return Pager(
             config = PagingConfig(pageSize = 5),
-            pagingSourceFactory = { PersonsSource(api, cursor) }
+            pagingSourceFactory = { PersonsSource(api) }
         ).flow
     }
 

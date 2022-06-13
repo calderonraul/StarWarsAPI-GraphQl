@@ -12,6 +12,6 @@ interface PersonsRepository {
     fun getPersonsFromRoom():Flow<List<PersonDomain>>
     suspend fun getPersonById(id:String)
     fun getPersonByIdFromRoom():Flow<PersonXDomain>
-    fun getOrdersPaginated(cursor: String): Flow<PagingData<PersonDomain>>
+    fun getOrdersPaginated(): Flow<PagingData<PersonDomain>>
 
 }

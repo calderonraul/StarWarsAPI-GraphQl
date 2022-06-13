@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -34,7 +35,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 @Composable
-fun PersonItem(person: PersonDomain,  navController: NavController) {
+fun PersonItem(person: PersonDomain, navController: NavController) {
 
     var aux = ""
     Row(modifier = Modifier
@@ -81,10 +82,42 @@ fun PersonItem(person: PersonDomain,  navController: NavController) {
 @Composable
 fun PersonList(state: PersonUIState, navController: NavController) {
 
-    val personListItems:LazyPagingItems<PersonDomain> = state.fetchPersonsPaginated().collectAsLazyPagingItems()
-    LazyColumn{
+    val personListItems: LazyPagingItems<PersonDomain> =
+        state.fetchPersonsPaginated().collectAsLazyPagingItems()
+
+
+
+    LazyColumn {
         items(items = personListItems) { item ->
             item?.let { PersonItem(it, navController = navController) }
+        }
+        personListItems.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                }
+                loadState.append is LoadState.Loading -> {
+                    item { LoadingItem() }
+                }
+
+                loadState.refresh is LoadState.Error -> {
+                    val e = personListItems.loadState.refresh as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.localizedMessage!!,
+                            modifier = Modifier.fillParentMaxSize(),
+                            onClickRetry = { retry() })
+                    }
+                }
+                loadState.append is LoadState.Error -> {
+                    val e = personListItems.loadState.append as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.localizedMessage!!,
+                            onClickRetry = { retry() })
+                    }
+                }
+            }
         }
     }
 }

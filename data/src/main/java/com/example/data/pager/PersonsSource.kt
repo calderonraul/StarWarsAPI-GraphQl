@@ -9,7 +9,7 @@ import com.example.data.mappers.apolloMapper.ApolloClassAllPeopleMapper
 import com.example.data.mappers.personsMapper.AllPeopleMapper
 import com.example.domain.entity.allPeople.PersonDomain
 
-class PersonsSource(private val api: PersonsAPI,private val cursor:String) : PagingSource<String, PersonDomain>() {
+class PersonsSource(private val api: PersonsAPI) : PagingSource<String, PersonDomain>() {
     override fun getRefreshKey(state: PagingState<String, PersonDomain>): String? {
         return state.anchorPosition?.let {
             state.closestItemToPosition(it)?.id

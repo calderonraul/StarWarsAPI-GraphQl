@@ -104,8 +104,8 @@ object RepositoryModule{
 @InstallIn(SingletonComponent::class)
 object PagerModule{
     @Provides
-    fun providePagerSource(api: PersonsAPI,cursor:String): PersonsSource {
-        return PersonsSource(api,cursor)
+    fun providePagerSource(api: PersonsAPI): PersonsSource {
+        return PersonsSource(api)
     }
 
 }

@@ -14,7 +14,5 @@ data class PersonUIState(
     val fetchPersonDetail: () -> Unit,
     val wordValue: StateFlow<String>,
     val onWordValueChanged: (String) -> Unit,
-    val currentQueryValue: StateFlow<String>,
-    val onQueryValueChanged: (String) -> Unit,
     val fetchPersonsPaginated: () -> Flow<PagingData<PersonDomain>>
 )
